@@ -18,6 +18,7 @@ public class Maze {
     Random random = new Random();
 
     public Maze(){
+
         //dessiner contour
         for (i=0; i<maze.length; i++){
             for (j=0;j<maze.length;j++){
@@ -62,7 +63,5 @@ public class Maze {
 
         maze[i][j] = end;
     }
-
-
 
 }
