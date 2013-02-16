@@ -48,6 +48,7 @@ public class Maze implements Serializable {
         wall();
         start();
         end();
+        way();
 
 
         for (i=0;i<rows;i++){
@@ -84,9 +85,27 @@ public class Maze implements Serializable {
                 i = random.nextInt(rows-2)+1;
                 j = random.nextInt(columns-2)+1;
                 maze[i][j].setValue("X");
+                }
+
+            }
     }
 
-}
-    }
 
+    void way(){
+        do{
+            if(iStart<iEnd){
+                iStart++;
+            }
+            if(iStart>iEnd){
+                iStart--;
+            }
+
+            if(jStart<jEnd){
+
+                jStart++;
+            }
+            maze[iStart][jStart].setValue("+");
+
+        }while(iStart != iEnd || jStart!=jEnd-1 );
+    }
 }
