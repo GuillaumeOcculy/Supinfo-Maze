@@ -1,5 +1,6 @@
 package com.supinfo.maze;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
@@ -9,59 +10,83 @@ import java.util.Random;
  * Time: 17:58
  * To change this template use File | Settings | File Templates.
  */
-public class Maze {
-    private int i,j,iStart,jStart,iEnd,jEnd, lower=1, higher=9;
-    private char maze[][] = new char[10][10];
-    private char start = 'S';
-    private char end = 'G';
+public class Maze implements Serializable {
+    private int rows;
+    private int columns;
+    private int i,j,iStart,jStart,iEnd,jEnd;
+    private Cell maze[][];
 
     Random random = new Random();
 
-    public Maze(){
+    //constructeur
+    public Maze(int rows, int columns) {
+        this.rows = rows;
+        this.columns = columns;
+        maze= new Cell[rows][columns];
+    }
+
+    public void initMaze(){
 
         //dessiner contour
-        for (i=0; i<maze.length; i++){
-            for (j=0;j<maze.length;j++){
-                maze[i][j]='X';
+        for (i=0; i<rows; i++){
+            for (j=0;j<columns;j++){
+                maze[i][j]= new Cell("X");
             }
         }
 
         //dessine l'interieur
-        for(i=1; i<maze.length-1; i++){
-            for (j=1; j<maze.length-1; j++){
-                maze[i][j]= '_';
+        for(i=1; i<rows-1; i++){
+            for (j=1; j<columns-1; j++){
+                maze[i][j].setValue("_");
             }
         }
     }
 
     void show(){
 
+        initMaze();
+        wall();
         start();
         end();
-        for (i=0;i<maze.length;i++){
-            for(j=0;j<maze.length;j++){
-                System.out.print(maze[i][j] + " ");
+
+
+        for (i=0;i<rows;i++){
+            for(j=0;j<columns;j++){
+                System.out.print(maze[i][j].getValue() + " ");
             }
             System.out.println(" ");
         }
     }
 
    private void start(){
-        i = random.nextInt(8)+1;
-        j = random.nextInt(8)+1;
-        iStart = i;
-        jStart = j;
-        maze[i][j] = start;
+        iStart = random.nextInt(rows-2)+1;
+        jStart = random.nextInt(columns-2)+1;
+
+       maze[iStart][jStart].setValue("S");
     }
 
     private void end(){
 
-        i = random.nextInt(8)+1;
-        j = random.nextInt(8)+1;
-        iEnd = i;
-        jEnd = j;
+        iEnd = random.nextInt(rows-2)+1;
+        jEnd = random.nextInt(columns-2)+1;
 
-        maze[i][j] = end;
+        maze[iEnd][jEnd].setValue("G");
+    }
+
+
+    //mettre les murs autours
+    private void wall(){
+
+        for (int i=1; i <rows - 1; i++){
+            for (int j=1; j < columns - 1; j++){
+                maze[i][j].setValue("_");
+                // Wall
+                i = random.nextInt(rows-2)+1;
+                j = random.nextInt(columns-2)+1;
+                maze[i][j].setValue("X");
+    }
+
+}
     }
 
 }
